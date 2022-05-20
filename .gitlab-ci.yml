@@ -1,7 +1,7 @@
 include:
   - project: 'wpgwn/wpgwn-ci'
     ref: main
-    file: 'service.yaml'
+    file: 'pom.gitlab-ci.yml'
 
 variables:
   PROJECT_KEY: 'com.exxeta.wpgwn:wpgwn-base'
