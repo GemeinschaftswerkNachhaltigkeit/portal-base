@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.7</version> <!-- Remember to update spring-boot.version in properties too! -->
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.exxeta.wpgwn</groupId>
+    <artifactId>wpgwn-base</artifactId>
+    <version>2.6.7.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>WPGWN Base Pom</name>
+    <description>Level 1 Base POM.</description>
+    <properties>
+        <java.version>11</java.version>
+        <spring-boot.version>2.6.7</spring-boot.version>
+        <spring.cloud.version>2021.0.2</spring.cloud.version>
+        <jib-maven-plugin.version>3.2.1</jib-maven-plugin.version>
+        <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
+        <checkstyle.config.location>./checkstyle.xml</checkstyle.config.location>
+        <checkstyle.version>10.2</checkstyle.version>
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+        <license-maven-plugin.version>2.0.0</license-maven-plugin.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+        <repository.url.repositories>https://nexus3.lej.eis.network/repository</repository.url.repositories>
+    </properties>
+
+    <organization>
+        <name>EXXETA AG</name>
+        <url>https://www.exxeta.com</url>
+    </organization>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${org.mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <!-- Spring Cloud muss mit der jeweiligen Spring Boot Version kompatibel sein -->
+                <!-- https://spring.io/projects/spring-cloud -> Tabelle 1 -->
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle-plugin.version}</version>
+                    <configuration>
+                        <configLocation>${checkstyle.config.location}</configLocation>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <id>validate</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <!-- See https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html -->
+                        <!-- Classpath elements to supply as annotation processor path. If specified, the compiler   -->
+                        <!-- will detect annotation processors only in those classpath elements. If omitted, the     -->
+                        <!-- default classpath is used to detect annotation processors. The detection itself depends -->
+                        <!-- on the configuration of annotationProcessors.                                           -->
+                        <!--                                                                                         -->
+                        <!-- According to this documentation, the provided dependency processor is not considered!   -->
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${org.mapstruct.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>${lombok-mapstruct-binding.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.springframework.boot</groupId>
+                                <artifactId>spring-boot-configuration-processor</artifactId>
+                                <version>${spring-boot.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                        <compilerArgs>
+                            <arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
+                            <arg>-Amapstruct.defaultComponentModel=spring</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+
+
+                <plugin>
+                    <!-- Berechnet u.a. die Zeilenabdeckung. Benötigt für SonarQube. -->
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>default-prepare-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                                <goal>prepare-agent-integration</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>report-integration</goal>
+                                <goal>report</goal>
+                                <goal>report-aggregate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <!-- Benötigt für die Erstellung der Lizenz-Reports -->
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>${license-maven-plugin.version}</version>
+                    <configuration>
+                        <licenseMerges>
+                            <!-- Bitte die Zeile nicht umbrechen! -->
+                            <licenseMerge>Apache 2 License|Apache License, Version 2.0|Apache License, version 2.0|The
+                                Apache License, Version 2.0|The Apache Software License, Version 2.0|Apache License
+                                2.0|Apache 2
+                            </licenseMerge>
+                            <licenseMerge>MIT License|The MIT License</licenseMerge>
+                            <licenseMerge>BSD License|The BSD License</licenseMerge>
+                            <licenseMerge>CC0 License|CC0|Public Domain, per Creative Commons CC0</licenseMerge>
+                        </licenseMerges>
+                    </configuration>
+                </plugin>
+
+
+                <plugin>
+                    <groupId>pl.project13.maven</groupId>
+                    <artifactId>git-commit-id-plugin</artifactId>
+                    <configuration>
+                        <useNativeGit>true</useNativeGit>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>${jib-maven-plugin.version}</version>
+                    <configuration>
+                        <to>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <image>
+                                ${env.DOCKER_PUSH_URI}/wpgwn/${project.artifactId}
+                            </image>
+                            <tags>
+                                <tag>${project.version}</tag>
+                            </tags>
+                            <auth>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <username>${env.DOCKER_PUSH_USER}</username>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <password>${env.DOCKER_PUSH_PASS}</password>
+                            </auth>
+                        </to>
+                        <container>
+                            <user>nobody</user>
+                            <jvmFlags>
+                                <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+                                <jvmFlag>-Duser.timezone=Europe/Berlin</jvmFlag>
+                                <jvmFlag>-Duser.country=DE</jvmFlag>
+                                <jvmFlag>-Duser.language=de</jvmFlag>
+                            </jvmFlags>
+                        </container>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <argLine>${argLine} -Duser.timezone=Europe/Berlin -Duser.country=DE -Duser.language=de</argLine>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <configuration>
+                                <argLine>${argLine} -Duser.timezone=Europe/Berlin -Duser.country=DE -Duser.language=de
+                                </argLine>
+                            </configuration>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>exxeta-maven-repository</id>
+            <name>Internal</name>
+            <url>${repository.url.repositories}/exxeta.maven</url>
+        </repository>
+        <snapshotRepository>
+            <id>exxeta-maven-repository</id>
+            <name>Internal.Snapshot</name>
+            <url>${repository.url.repositories}/exxeta.maven-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
+</project>
