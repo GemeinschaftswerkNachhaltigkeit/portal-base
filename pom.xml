@@ -28,6 +28,8 @@
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <repository.url.repositories>https://nexus3.lej.eis.network/repository</repository.url.repositories>
+        <testcontainers.version>1.17.2</testcontainers.version>
+        <apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>
     </properties>
 
     <organization>
@@ -51,8 +53,15 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-        </dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
+        </dependencies>
     </dependencyManagement>
 
 
@@ -140,6 +149,23 @@
                     </configuration>
                 </plugin>
 
+                <plugin>
+                    <groupId>com.mysema.maven</groupId>
+                    <artifactId>apt-maven-plugin</artifactId>
+                    <version>${apt-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>process</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>target/generated-sources/java</outputDirectory>
+                                <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
 
                 <plugin>
                     <!-- Berechnet u.a. die Zeilenabdeckung. Benötigt für SonarQube. -->
