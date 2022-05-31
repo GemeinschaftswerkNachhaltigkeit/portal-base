@@ -30,6 +30,7 @@
         <repository.url.repositories>https://nexus3.lej.eis.network/repository</repository.url.repositories>
         <testcontainers.version>1.17.2</testcontainers.version>
         <apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M6</maven-failsafe-plugin.version>
     </properties>
 
     <organization>
@@ -262,6 +263,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
                     <executions>
                         <execution>
                             <configuration>
