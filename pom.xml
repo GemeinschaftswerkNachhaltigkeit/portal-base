@@ -257,7 +257,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <configuration>
-                        <argLine>${argLine} -Duser.timezone=Europe/Berlin -Duser.country=DE -Duser.language=de</argLine>
+                        <argLine>${argLine} -Duser.timezone=Europe/Berlin -Duser.country=DE -Duser.language=de -Dspring.profiles.active=ci</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
