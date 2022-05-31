@@ -267,7 +267,7 @@
                     <executions>
                         <execution>
                             <configuration>
-                                <argLine>${argLine} -Duser.timezone=Europe/Berlin -Duser.country=DE -Duser.language=de
+                                <argLine>${argLine} -Duser.timezone=Europe/Berlin -Duser.country=DE -Duser.language=de -Dspring.profiles.active=ci
                                 </argLine>
                             </configuration>
                             <goals>
