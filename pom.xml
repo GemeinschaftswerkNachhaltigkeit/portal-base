@@ -35,6 +35,7 @@
         <thymeleaf-extras-nl2br.version>1.0.2</thymeleaf-extras-nl2br.version>
         <spring-surefire-profile/>
         <spring-failsafe-profile/>
+        <springdoc-openapi-ui.version>1.6.9</springdoc-openapi-ui.version>
     </properties>
 
     <organization>
@@ -77,6 +78,11 @@
                 <groupId>com.github.bufferings</groupId>
                 <artifactId>thymeleaf-extras-nl2br</artifactId>
                 <version>${thymeleaf-extras-nl2br.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-openapi-ui.version}</version>
             </dependency>
 
         </dependencies>
