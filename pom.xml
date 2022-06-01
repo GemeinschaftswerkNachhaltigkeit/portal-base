@@ -316,7 +316,7 @@
         <id>gitlab_pipeline</id>
         <activation>
             <property>
-                <name>MAVEN_POM_DIR</name>
+                <name>env.CI_PIPELINE_ID</name>
             </property>
         </activation>
         <properties>
