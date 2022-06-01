@@ -33,6 +33,8 @@
         <maven-failsafe-plugin.version>3.0.0-M6</maven-failsafe-plugin.version>
         <greenmail.version>1.6.9</greenmail.version>
         <thymeleaf-extras-nl2br.version>1.0.2</thymeleaf-extras-nl2br.version>
+        <spring-surefire-profile/>
+        <spring-failsafe-profile/>
     </properties>
 
     <organization>
@@ -272,7 +274,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <configuration>
-                        <argLine>${argLine} -Duser.timezone=Europe/Berlin -Duser.country=DE -Duser.language=de -Dspring.profiles.active=ci</argLine>
+                        <argLine>${argLine} -Duser.timezone=Europe/Berlin -Duser.country=DE -Duser.language=de ${spring-surefire-profile}</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -282,7 +284,7 @@
                     <executions>
                         <execution>
                             <configuration>
-                                <argLine>${argLine} -Duser.timezone=Europe/Berlin -Duser.country=DE -Duser.language=de -Dspring.profiles.active=ci
+                                <argLine>${argLine} -Duser.timezone=Europe/Berlin -Duser.country=DE -Duser.language=de ${spring-failsafe-profile}
                                 </argLine>
                             </configuration>
                             <goals>
@@ -309,5 +311,20 @@
         </snapshotRepository>
     </distributionManagement>
 
+<profiles>
+    <profile>
+        <id>gitlab_pipeline</id>
+        <activation>
+            <property>
+                <name>CI_PIPELINE_ID</name>
+            </property>
+        </activation>
+        <properties>
+            <spring-surefire-profile>-Dspring.profiles.active=ci</spring-surefire-profile>
+            <spring-failsafe-profile>-Dspring.profiles.active=ci</spring-failsafe-profile>
+        </properties>
+    </profile>
+
+</profiles>
 
 </project>
