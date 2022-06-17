@@ -69,7 +69,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/com.icegreen/greenmail -->
             <dependency>
                 <groupId>com.icegreen</groupId>
                 <artifactId>greenmail</artifactId>
@@ -86,7 +85,6 @@
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${springdoc-openapi-ui.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.n52.jackson/jackson-datatype-jts -->
             <dependency>
                 <groupId>org.n52.jackson</groupId>
                 <artifactId>jackson-datatype-jts</artifactId>
@@ -98,10 +96,8 @@
                 <artifactId>excel-streaming-reader</artifactId>
                 <version>${excel-streaming-reader.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
-
 
     <build>
         <pluginManagement>
@@ -119,6 +115,23 @@
                     </configuration>
                 </plugin>
 
+                <plugin>
+                    <groupId>com.mysema.maven</groupId>
+                    <artifactId>apt-maven-plugin</artifactId>
+                    <version>${apt-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>process</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>target/generated-sources/java</outputDirectory>
+                                <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
