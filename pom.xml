@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.0</version> <!-- Remember to update spring-boot.version in properties too! -->
+        <version>2.7.1</version> <!-- Remember to update spring-boot.version in properties too! -->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.exxeta.wpgwn</groupId>
@@ -16,7 +16,7 @@
     <description>Level 1 Base POM.</description>
     <properties>
         <java.version>11</java.version>
-        <spring-boot.version>2.7.0</spring-boot.version>
+        <spring-boot.version>2.7.1</spring-boot.version>
         <spring.cloud.version>2021.0.3</spring.cloud.version>
         <jib-maven-plugin.version>3.2.1</jib-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
@@ -39,6 +39,7 @@
         <jackson-datatype-jts.version>1.2.10</jackson-datatype-jts.version>
         <excel-streaming-reader.version>4.0.1</excel-streaming-reader.version>
         <h2.version>2.1.214</h2.version>
+        <keycloak.version>18.0.2</keycloak.version>
     </properties>
 
     <organization>
@@ -96,6 +97,11 @@
                 <groupId>com.github.pjfanning</groupId>
                 <artifactId>excel-streaming-reader</artifactId>
                 <version>${excel-streaming-reader.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-admin-client</artifactId>
+                <version>${keycloak.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
