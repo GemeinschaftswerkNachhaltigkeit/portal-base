@@ -40,6 +40,8 @@
         <excel-streaming-reader.version>4.0.1</excel-streaming-reader.version>
         <h2.version>2.1.214</h2.version>
         <keycloak.version>18.0.2</keycloak.version>
+        <resteasy.versions>3.15.3.Final</resteasy.versions>
+        <guava.version>31.1-jre</guava.version>
     </properties>
 
     <organization>
@@ -103,6 +105,35 @@
                 <artifactId>keycloak-admin-client</artifactId>
                 <version>${keycloak.version}</version>
             </dependency>
+            <!-- update old keycloak dependencies -->
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-client</artifactId>
+                <version>${resteasy.versions}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-multipart-provider</artifactId>
+                <version>${resteasy.versions}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jackson2-provider</artifactId>
+                <version>${resteasy.versions}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jaxb-provider</artifactId>
+                <version>${resteasy.versions}</version>
+            </dependency>
+
+            <!-- BEGIN: Update vulnerable dependencies -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <!-- END: Update vulnerable dependencies -->
         </dependencies>
     </dependencyManagement>
 
