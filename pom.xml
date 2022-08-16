@@ -326,9 +326,6 @@
                             <image>
                                 ${env.DOCKER_PUSH_URI}/wpgwn/${project.artifactId}
                             </image>
-                            <tags>
-                                <tag>${project.version}</tag>
-                            </tags>
                             <auth>
                                 <!--suppress UnresolvedMavenProperty -->
                                 <username>${env.DOCKER_PUSH_USER}</username>
@@ -389,20 +386,63 @@
         </snapshotRepository>
     </distributionManagement>
 
-<profiles>
-    <profile>
-        <id>gitlab_pipeline</id>
-        <activation>
-            <property>
-                <name>env.CI_PIPELINE_ID</name>
-            </property>
-        </activation>
-        <properties>
-            <spring-surefire-profile>-Dspring.profiles.active=ci</spring-surefire-profile>
-            <spring-failsafe-profile>-Dspring.profiles.active=ci</spring-failsafe-profile>
-        </properties>
-    </profile>
+    <profiles>
+        <profile>
+            <id>gitlab_pipeline</id>
+            <activation>
+                <property>
+                    <name>env.CI_PIPELINE_ID</name>
+                </property>
+            </activation>
+            <properties>
+                <spring-surefire-profile>-Dspring.profiles.active=ci</spring-surefire-profile>
+                <spring-failsafe-profile>-Dspring.profiles.active=ci</spring-failsafe-profile>
+            </properties>
+        </profile>
 
-</profiles>
+        <profile>
+            <id>gitlab_tag_pipeline</id>
+            <activation>
+                <property>
+                    <name>env.CI_COMMIT_TAG</name>
+                </property>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.google.cloud.tools</groupId>
+                            <artifactId>jib-maven-plugin</artifactId>
+                            <version>${jib-maven-plugin.version}</version>
+                            <configuration>
+                                <to>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <image>
+                                        ${env.DOCKER_PUSH_URI}/wpgwn/${project.artifactId}:${env.CI_COMMIT_TAG}
+                                    </image>
+                                    <auth>
+                                        <!--suppress UnresolvedMavenProperty -->
+                                        <username>${env.DOCKER_PUSH_USER}</username>
+                                        <!--suppress UnresolvedMavenProperty -->
+                                        <password>${env.DOCKER_PUSH_PASS}</password>
+                                    </auth>
+                                </to>
+                                <container>
+                                    <user>nobody</user>
+                                    <jvmFlags>
+                                        <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+                                        <jvmFlag>-Duser.timezone=Europe/Berlin</jvmFlag>
+                                        <jvmFlag>-Duser.country=DE</jvmFlag>
+                                        <jvmFlag>-Duser.language=de</jvmFlag>
+                                    </jvmFlags>
+                                </container>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+
+    </profiles>
 
 </project>
