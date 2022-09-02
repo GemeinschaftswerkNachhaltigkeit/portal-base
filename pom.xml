@@ -45,6 +45,7 @@
 
         <!-- BEGIN: Update vulnerable dependencies -->
         <postgresql.version>42.4.1</postgresql.version>
+        <snakeyaml.version>1.31</snakeyaml.version>
         <!-- END: Update vulnerable dependencies -->
     </properties>
 
