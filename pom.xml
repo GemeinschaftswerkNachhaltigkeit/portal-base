@@ -18,7 +18,7 @@
         <java.version>11</java.version>
         <spring-boot.version>2.7.3</spring-boot.version>
         <spring.cloud.version>2021.0.3</spring.cloud.version>
-        <jib-maven-plugin.version>3.2.1</jib-maven-plugin.version>
+        <jib-maven-plugin.version>3.3.0</jib-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.2.0</maven-checkstyle-plugin.version>
         <checkstyle.config.location>./checkstyle.xml</checkstyle.config.location>
         <checkstyle.version>10.3.3</checkstyle.version>
@@ -327,6 +327,10 @@
                             <image>
                                 ${env.DOCKER_PUSH_URI}/wpgwn/${project.artifactId}
                             </image>
+                            <tags>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <tag>${env.CI_COMMIT_REF_SLUG}</tag>
+                            </tags>
                             <auth>
                                 <!--suppress UnresolvedMavenProperty -->
                                 <username>${env.DOCKER_PUSH_USER}</username>
