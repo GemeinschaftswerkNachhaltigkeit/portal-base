@@ -19,7 +19,7 @@
         <spring-boot.version>2.7.7</spring-boot.version>
         <spring.cloud.version>2021.0.5</spring.cloud.version>
         <jib-maven-plugin.version>3.3.1</jib-maven-plugin.version>
-        <maven-checkstyle-plugin.version>3.2.0</maven-checkstyle-plugin.version>
+        <maven-checkstyle-plugin.version>3.2.1</maven-checkstyle-plugin.version>
         <checkstyle.config.location>./checkstyle.xml</checkstyle.config.location>
         <checkstyle.version>10.6.0</checkstyle.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
